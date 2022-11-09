@@ -9,15 +9,7 @@ function App() {
   const [filter, setFilter] = useState("all");
   const [filteredtodos, setFilteredTodos] = useState([]);
 
-  useEffect(() => {
-    getFromLocalStorage();
-  },[])
-
-  useEffect(() => {
-    filterHandler();
-    saveToLocalStorage();
-  }, [todos, filter])
-
+  
   function filterHandler() {
     switch (filter) {
       case 'completed':
@@ -26,19 +18,19 @@ function App() {
       case 'uncompleted':
         setFilteredTodos(todos.filter(todo => todo.completed === false))
         break;
-      default:
+        default:
         setFilteredTodos(todos);
         break;
+      }
     }
-  }
-
-  //Save to local
-  function saveToLocalStorage() {
-    if (todos.length > 0) {
-      localStorage.setItem("todos", JSON.stringify(todos));
+    
+    //Save to local
+    function saveToLocalStorage() {
+      if (todos.length > 0) {
+        localStorage.setItem("todos", JSON.stringify(todos));
+      }
     }
-  }
-
+    
   function getFromLocalStorage() {
     if (localStorage.getItem("todos") === null){
       localStorage.setItem("todos", JSON.stringify([]));
@@ -47,7 +39,16 @@ function App() {
       setTodos(localTodo);
     }
   }
-
+  
+  useEffect(() => {
+    getFromLocalStorage();
+  },[])
+  
+  useEffect(() => {
+    filterHandler();
+    saveToLocalStorage();
+  }, [todos, filter])
+  
   return (
     <div className="App">
       <header> <h1>To Do List</h1> </header>
